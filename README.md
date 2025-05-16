@@ -31,37 +31,3 @@ A API utiliza o padrão JSON para enviar e receber dados. Os retornos são bem e
 
 A validação dos campos é feita com o Validator do Laravel, garantindo que todos os dados obrigatórios sejam informados antes de qualquer ação no banco.
 
-🔍 Observações sobre o código
-O método index() retorna todos os jogos cadastrados e conta quantos existem.
-
-O store() valida os campos obrigatórios e salva o novo jogo.
-
-O show($id) busca um jogo específico pelo ID.
-
-O update() edita os dados de um jogo já existente, mas há um pequeno erro de lógica:
-
-php
-Copiar
-Editar
-if ($registroBanco) {
-    return response()->json([
-        'sucesso' => true,
-        'mensagem' => 'Informações do jogo, nao encontradas',
-    ], 404);
-};
-Esse trecho deveria ser:
-
-php
-Copiar
-Editar
-if (!$registroBanco) {
-    return response()->json([
-        'sucesso' => false,
-        'mensagem' => 'Informações do jogo não encontradas',
-    ], 404);
-};
-Ou seja, ele está tratando como erro mesmo quando o jogo foi encontrado, o que acaba invertendo a lógica da aplicação.
-
-O destroy() verifica se o jogo existe e o remove do banco de dados.
-
-
